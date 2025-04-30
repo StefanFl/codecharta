@@ -6,22 +6,22 @@ import de.maibornwolff.codecharta.analysers.exporters.csv.CSVExporter
 import de.maibornwolff.codecharta.analysers.filters.edgefilter.EdgeFilter
 import de.maibornwolff.codecharta.analysers.filters.mergefilter.MergeFilter
 import de.maibornwolff.codecharta.analysers.filters.structuremodifier.StructureModifier
+import de.maibornwolff.codecharta.analysers.importers.codemaat.CodeMaatImporter
+import de.maibornwolff.codecharta.analysers.importers.coverage.CoverageImporter
+import de.maibornwolff.codecharta.analysers.importers.csv.CSVImporter
+import de.maibornwolff.codecharta.analysers.importers.sonar.SonarImporter
+import de.maibornwolff.codecharta.analysers.importers.sourcemonitor.SourceMonitorImporter
+import de.maibornwolff.codecharta.analysers.importers.tokei.TokeiImporter
+import de.maibornwolff.codecharta.analysers.parsers.gitlog.GitLogParser
+import de.maibornwolff.codecharta.analysers.parsers.rawtext.RawTextParser
+import de.maibornwolff.codecharta.analysers.parsers.sourcecode.SourceCodeParser
+import de.maibornwolff.codecharta.analysers.parsers.svnlog.SVNLogParser
 import de.maibornwolff.codecharta.analysers.tools.inspection.InspectionTool
 import de.maibornwolff.codecharta.analysers.tools.validation.ValidationTool
-import de.maibornwolff.codecharta.analysis.importer.codemaat.CodeMaatImporter
-import de.maibornwolff.codecharta.analysis.importer.coverage.CoverageImporter
-import de.maibornwolff.codecharta.analysis.importer.csv.CSVImporter
-import de.maibornwolff.codecharta.analysis.importer.sonar.SonarImporter
-import de.maibornwolff.codecharta.analysis.importer.sourcemonitor.SourceMonitorImporter
-import de.maibornwolff.codecharta.analysis.importer.tokeiimporter.TokeiImporter
 import de.maibornwolff.codecharta.ccsh.analyser.AnalyserService
 import de.maibornwolff.codecharta.ccsh.analyser.InteractiveAnalyserSuggestion
 import de.maibornwolff.codecharta.ccsh.analyser.InteractiveDialog
 import de.maibornwolff.codecharta.ccsh.analyser.repository.PicocliAnalyserRepository
-import de.maibornwolff.codecharta.parser.gitlogparser.GitLogParser
-import de.maibornwolff.codecharta.parser.rawtextparser.RawTextParser
-import de.maibornwolff.codecharta.parser.sourcecodeparser.SourceCodeParser
-import de.maibornwolff.codecharta.parser.svnlogparser.SVNLogParser
 import de.maibornwolff.codecharta.util.AttributeGeneratorRegistry
 import de.maibornwolff.codecharta.util.Logger
 import picocli.CommandLine
@@ -55,7 +55,7 @@ import kotlin.system.exitProcess
         RawTextParser::class
     ],
     versionProvider = Ccsh.ManifestVersionProvider::class,
-    footer = [CodeChartaConstants.General.GENERIC_FOOTER]
+    footer = [CodeChartaConstants.GENERIC_FOOTER]
 )
 class Ccsh : Callable<Unit?> {
     @CommandLine.Option(
@@ -250,6 +250,7 @@ class Ccsh : Callable<Unit?> {
             AttributeGeneratorRegistry.registerGenerator(CoverageImporter())
             AttributeGeneratorRegistry.registerGenerator(SVNLogParser())
             AttributeGeneratorRegistry.registerGenerator(TokeiImporter())
+            AttributeGeneratorRegistry.registerGenerator(SourceMonitorImporter())
         }
     }
 
